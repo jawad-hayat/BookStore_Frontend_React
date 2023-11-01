@@ -6,7 +6,7 @@ export interface Book {
     price: number,
     bookBrand: string,
     bookType?: string,
-    quantityInStock?: number
+    // quantityInStock?: number
 }
 
 export interface BookParams {
