@@ -1,8 +1,10 @@
 import { Divider, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Book } from "../../app/models/book";
+import LoadingComponent from "../../app/layout/LoadingComponent";
+import NotFound from "../../app/errors/NotFound";
+import agent from "../../app/api/agent";
 
 
 export default function BookDetails() {
@@ -11,15 +13,15 @@ export default function BookDetails() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`https://localhost:7120/api/Books/${id}`)
-            .then(response => setBook(response.data))
+        id && agent.Catalog.details(parseInt(id))
+            .then(response => setBook(response))
             .catch(error => console.log(error))
             .finally(() => setLoading(false))
     }, [id]);
 
-    if (loading) return <h3>Loading...</h3>
+    if (loading) return <LoadingComponent message="Loading Book..." />
 
-    if (!book) return <h3>Product not found</h3>
+    if (!book) return <NotFound />
 
     return (
         <Grid container spacing={6}>
